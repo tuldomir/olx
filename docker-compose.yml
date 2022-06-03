@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  proxy:
+    container_name: tor_proxy
+    image: tor/proxy
+    restart: always
+    build:
+      context: .
+    ports:
+      - 9050:9050
+
+  #  product:
+  #    container_name: shop-product
+  #    image: shop/product-app
+  #    build:
+  #      context: .
+  #    env_file: .env
+  #    depends_on:
+  #      postgres:
+  #    networks:
+  #      - backend
+  #    ports:
+  #      - 9000:${PRODUCT_PORT}
+  #  
+  #  mongodb:
+  #    container_name: mongo-db
+  #    image: mongo:4.4
+  #    environment:
+  #      MONGO_INITDB_DATABASE: scraper
+  #      MONGO_INITDB_ROOT_USERNAME: admin 
+  #      MONGO_INITDB_ROOT_PASSWORD: secret
+  #    volumes:
+  #      - mongodb:/data/db
+  #    restart: on-failure
+  #    deploy:
+  #      replicas: 1 
+  #      resources:
+  #        limits:
+  #          cpus: "0.25"
+  #          memory: 512M
+  #    healthcheck:
+  #      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/ --quiet
+  #      timeout: 45s
+  #      interval: 10s
+  #      retries: 10
+  #      #networks:
+  #      #- backend
+  #    ports:
+  #      - 27017:27017
+  #    
+  #volumes:
+  #  mongodb:
+  #
+    #networks:
+    #  backend:
+    #    driver: bridge

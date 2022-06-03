@@ -1,0 +1,399 @@
+[
+    {
+      "id": 745413489,
+      "url": "https://www.olx.ua/d/obyavlenie/pochasovo-tsentr-zh-d-svobodno-kvartira-posutochno-pochasovo-IDOrG6d.html",
+      "title": "ПОЧАСОВО Центр, Ж.д Свободно квартира посуточно, почасово",
+      "last_refresh_time": "2022-05-30T17:56:44+03:00",
+      "created_time": "2022-04-19T16:20:47+03:00",
+      "valid_to_time": "2022-06-15T17:32:43+03:00",
+      "pushup_time": "2022-05-30T17:56:44+03:00",
+      "description": "Уютная стильная современная, ухоженная квартира расположена непо редственно в одной из центральных частей города на Днепре.",
+      "promotion": {
+        "highlighted": true,
+        "urgent": false,
+        "top_ad": true,
+        "options": [
+          "bundle_optimum"
+        ],
+        "b2c_ad_page": false,
+        "premium_ad_page": false
+      },
+      "params": [
+        {
+          "key": "country",
+          "name": "Страна",
+          "type": "select",
+          "value": {
+            "key": "98",
+            "label": "Украина"
+          }
+        },
+        {
+          "key": "price",
+          "name": "Цена",
+          "type": "price",
+          "value": {
+            "value": 230,
+            "type": "arranged",
+            "arranged": true,
+            "budget": false,
+            "currency": "UAH",
+            "negotiable": true,
+            "converted_value": null,
+            "previous_value": null,
+            "converted_previous_value": null,
+            "converted_currency": null,
+            "label": "230 грн."
+          }
+        },
+        {
+          "key": "minimum_rental_days",
+          "name": "Минимальное количество ночей",
+          "type": "input",
+          "value": {
+            "key": "1",
+            "label": "1"
+          }
+        },
+        {
+          "key": "hourly_rent",
+          "name": "Возможна сдача почасово",
+          "type": "checkbox",
+          "value": {
+            "key": "1",
+            "label": "Возможна сдача почасово"
+          }
+        },
+        {
+          "key": "property_type_appartments_rent",
+          "name": "Тип дома",
+          "type": "select",
+          "value": {
+            "key": "6",
+            "label": "Совмин"
+          }
+        },
+        {
+          "key": "total_area",
+          "name": "Общая площадь",
+          "type": "input",
+          "value": {
+            "key": "34",
+            "label": "34 м²"
+          }
+        },
+        {
+          "key": "floor",
+          "name": "Этаж",
+          "type": "input",
+          "value": {
+            "key": "3",
+            "label": "3"
+          }
+        },
+        {
+          "key": "total_floors",
+          "name": "Этажность",
+          "type": "input",
+          "value": {
+            "key": "5",
+            "label": "5"
+          }
+        },
+        {
+          "key": "available_now",
+          "name": "Работаем сейчас",
+          "type": "checkbox",
+          "value": {
+            "key": "1",
+            "label": "Работаем сейчас"
+          }
+        },
+        {
+          "key": "number_of_rooms",
+          "name": "Количество комнат",
+          "type": "input",
+          "value": {
+            "key": "1",
+            "label": "1"
+          }
+        },
+        {
+          "key": "sleep_places",
+          "name": "Количество спальных мест",
+          "type": "select",
+          "value": {
+            "key": "6",
+            "label": "6+"
+          }
+        },
+        {
+          "key": "is_food",
+          "name": "Питание",
+          "type": "select",
+          "value": {
+            "key": "no",
+            "label": "Нет"
+          }
+        },
+        {
+          "key": "layout",
+          "name": "Планировка",
+          "type": "select",
+          "value": {
+            "key": "free_layout",
+            "label": "Свободная планировка"
+          }
+        },
+        {
+          "key": "bathroom",
+          "name": "Санузел",
+          "type": "select",
+          "value": {
+            "key": "2",
+            "label": "Смежный"
+          }
+        },
+        {
+          "key": "repair",
+          "name": "Ремонт",
+          "type": "select",
+          "value": {
+            "key": "2",
+            "label": "Евроремонт"
+          }
+        },
+        {
+          "key": "appliances_2",
+          "name": "Бытовая техника",
+          "type": "checkboxes",
+          "value": {
+            "key": [
+              "dishwasher",
+              "electric_kettle",
+              "fridge",
+              "hair_dryer",
+              "iron",
+              "oven",
+              "stove"
+            ],
+            "label": "Стиральная машина, Электрочайник, Холодильник, Фен, Утюг, Духовой шкаф, Плита"
+          }
+        },
+        {
+          "key": "multimedia",
+          "name": "Мультимедиа",
+          "type": "checkboxes",
+          "value": {
+            "key": [
+              "speed_internet",
+              "wifi"
+            ],
+            "label": "Скоростной интернет, Wi-Fi"
+          }
+        },
+        {
+          "key": "comfort_2",
+          "name": "Комфорт",
+          "type": "checkboxes",
+          "value": {
+            "key": [
+              "protected_area",
+              "safe",
+              "shower_cabin",
+              "shower_set",
+              "single_bed",
+              "terrace",
+              "wardrobe",
+              "CCTV",
+              "additional_sleeping_place",
+              "air_conditioning",
+              "balcony_loggia",
+              "bath",
+              "double_bed",
+              "fitness_centre",
+              "heated_floors",
+              "heating_system",
+              "iron",
+              "parking_place"
+            ],
+            "label": "Охраняемая территория, Сейф, Душевая кабина, Набор для душа, Односпальная кровать, Терраса, Гардероб, Видеонаблюдение, Дополнительное спальное место, Кондиционер, Балкон, лоджия, Ванна, Двуспальная кровать, Фитнес-центр, спортзал, Подогрев полов, Автономное отопление, Утюг, гладильная доска, Парковочное место"
+          }
+        },
+        {
+          "key": "infrastructure4_500_m",
+          "name": "Инфраструктура (до 500 метров)",
+          "type": "checkboxes",
+          "value": {
+            "key": [
+              "playground",
+              "railway_station",
+              "restaurant_cafe_bar",
+              "sights",
+              "supermarket_shop",
+              "transport_stop",
+              "bank_ATM",
+              "bus_station",
+              "city_center",
+              "entertaining",
+              "farmacy",
+              "historical_places",
+              "market",
+              "metro",
+              "museums_exhibitions",
+              "park",
+              "parking"
+            ],
+            "label": "Детская площадка, ЖД станция, Ресторан, кафе, бар, Достопримечательности, Супермаркет, магазин, Остановка транспорта, Отделение банка, банкомат, Автовокзал, Центр города, Развлекательные заведения, Аптека, Исторические места, Рынок, Метро, Музеи, выставки, Парк, зелёная зона, Стоянка"
+          }
+        },
+        {
+          "key": "ecosystem_1_km_2",
+          "name": "Ландшафт (до 1 км.)",
+          "type": "checkboxes",
+          "value": {
+            "key": [
+              "beach",
+              "city",
+              "forest",
+              "hills",
+              "islands",
+              "lake",
+              "park",
+              "waterfall"
+            ],
+            "label": "Пляж, Город, Лес, Холмы, Острова, Озеро, Парк, Водопад"
+          }
+        },
+        {
+          "key": "additional_2",
+          "name": "Дополнительно",
+          "type": "checkboxes",
+          "value": {
+            "key": [
+              "accounting_documents",
+              "booking",
+              "cashless_payments",
+              "credit_card",
+              "english_speaking_staff",
+              "parties",
+              "reg_24h",
+              "transfer",
+              "with_children",
+              "with_pets",
+              "without_adv_payment"
+            ],
+            "label": "Отчетные документы, Возможность бронирования, Безналичный расчет, Оплата кредитной картой, Англоязычный персонал, Можно для вечеринок, Круглосуточная регистрация, Трансфер, Можно с детьми, Можно с питомцами, Бронь без аванса"
+          }
+        }
+      ],
+      "key_params": [],
+      "business": true,
+      "user": {
+        "id": 817809944,
+        "created": "2022-03-31T13:00:19+03:00",
+        "other_ads_enabled": true,
+        "name": "zbutnikolaj",
+        "logo": null,
+        "logo_ad_page": null,
+        "social_network_account_type": null,
+        "photo": null,
+        "banner_mobile": "",
+        "banner_desktop": "",
+        "company_name": "",
+        "about": "",
+        "b2c_business_page": false,
+        "is_online": false,
+        "last_seen": "2022-05-30T18:10:40+03:00",
+        "seller_type": null
+      },
+      "status": "active",
+      "contact": {
+        "name": "zbutnikolaj",
+        "phone": true,
+        "chat": true,
+        "negotiation": true,
+        "courier": false
+      },
+      "map": {
+        "zoom": 13,
+        "lat": 48.463,
+        "lon": 35.02387,
+        "radius": 3,
+        "show_detailed": false
+      },
+      "location": {
+        "city": {
+          "id": 121,
+          "name": "Днепр",
+          "normalized_name": "dnepr"
+        },
+        "district": {
+          "id": 119,
+          "name": "Центральный"
+        },
+        "region": {
+          "id": 21,
+          "name": "Днепропетровская область",
+          "normalized_name": "dnp"
+        }
+      },
+      "photos": [
+        {
+          "id": 1906944786,
+          "filename": "zh6zu0xz1kcw2-UA",
+          "rotation": 0,
+          "width": 1080,
+          "height": 1393,
+          "link": "https://ireland.apollo.olxcdn.com:443/v1/files/zh6zu0xz1kcw2-UA/image;s={width}x{height}"
+        },
+        {
+          "id": 1906944787,
+          "filename": "r3xw59z0vdk9-UA",
+          "rotation": 0,
+          "width": 1080,
+          "height": 784,
+          "link": "https://ireland.apollo.olxcdn.com:443/v1/files/r3xw59z0vdk9-UA/image;s={width}x{height}"
+        },
+        {
+          "id": 1906944788,
+          "filename": "ltqwgzngcb0x2-UA",
+          "rotation": 0,
+          "width": 1080,
+          "height": 789,
+          "link": "https://ireland.apollo.olxcdn.com:443/v1/files/ltqwgzngcb0x2-UA/image;s={width}x{height}"
+        },
+        {
+          "id": 1906944789,
+          "filename": "l3gm2vvswtxa1-UA",
+          "rotation": 0,
+          "width": 1080,
+          "height": 1350,
+          "link": "https://ireland.apollo.olxcdn.com:443/v1/files/l3gm2vvswtxa1-UA/image;s={width}x{height}"
+        }
+      ],
+      "partner": null,
+      "category": {
+        "id": 1618,
+        "type": "real_estate"
+      },
+      "delivery": {
+        "rock": {
+          "offer_id": null,
+          "active": false,
+          "mode": null
+        }
+      },
+      "safedeal": {
+        "weight": 1,
+        "weight_grams": 500,
+        "status": "unactive",
+        "safedeal_blocked": false,
+        "allowed_quantity": []
+      },
+      "shop": {
+        "subdomain": null
+      },
+      "offer_type": "offer"
+    }
+]

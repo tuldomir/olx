@@ -1,0 +1,156 @@
+// package main
+
+// import "time"
+
+// // Page .
+// type Page struct {
+// 	PageNumber    int `json:"pageNumber"`
+// 	TotalElements int `json:"totalElements"`
+// 	TotalPages    int `json:"totalPages"`
+// 	Ads           []struct {
+// 		ID          int    `json:"id"`
+// 		Title       string `json:"title"`
+// 		Description string `json:"description"`
+// 		Category    struct {
+// 			ID   int    `json:"id"`
+// 			Type string `json:"type"`
+// 		} `json:"category"`
+// 		Map struct {
+// 			Zoom         int     `json:"zoom"`
+// 			Lat          float64 `json:"lat"`
+// 			Lon          float64 `json:"lon"`
+// 			Radius       int     `json:"radius"`
+// 			ShowDetailed bool    `json:"show_detailed"`
+// 		} `json:"map"`
+// 		IsBusiness    bool   `json:"isBusiness"`
+// 		URL           string `json:"url"`
+// 		IsHighlighted bool   `json:"isHighlighted"`
+// 		IsPromoted    bool   `json:"isPromoted"`
+// 		Promotion     struct {
+// 			Highlighted   bool     `json:"highlighted"`
+// 			Urgent        bool     `json:"urgent"`
+// 			TopAd         bool     `json:"top_ad"`
+// 			Options       []string `json:"options"`
+// 			B2CAdPage     bool     `json:"b2c_ad_page"`
+// 			PremiumAdPage bool     `json:"premium_ad_page"`
+// 		} `json:"promotion"`
+// 		CreatedTime     time.Time `json:"createdTime"`
+// 		LastRefreshTime time.Time `json:"lastRefreshTime"`
+// 		PushupTime      time.Time `json:"pushupTime"`
+// 		IsActive        bool      `json:"isActive"`
+// 		Status          string    `json:"status"`
+// 		Params          []struct {
+// 			Key   string `json:"key"`
+// 			Name  string `json:"name"`
+// 			Type  string `json:"type"`
+// 			Value string `json:"value"`
+// 		} `json:"params"`
+// 		Price struct {
+// 			Budget       bool   `json:"budget"`
+// 			Free         bool   `json:"free"`
+// 			Exchange     bool   `json:"exchange"`
+// 			DisplayValue string `json:"displayValue"`
+// 			RegularPrice struct {
+// 				Value             int    `json:"value"`
+// 				CurrencyCode      string `json:"currencyCode"`
+// 				CurrencySymbol    string `json:"currencySymbol"`
+// 				Negotiable        bool   `json:"negotiable"`
+// 				PriceFormatConfig struct {
+// 					DecimalSeparator   string `json:"decimalSeparator"`
+// 					ThousandsSeparator string `json:"thousandsSeparator"`
+// 				} `json:"priceFormatConfig"`
+// 			} `json:"regularPrice"`
+// 		} `json:"price"`
+// 		Location struct {
+// 			CityName             string `json:"cityName"`
+// 			CityID               int    `json:"cityId"`
+// 			CityNormalizedName   string `json:"cityNormalizedName"`
+// 			RegionName           string `json:"regionName"`
+// 			RegionID             int    `json:"regionId"`
+// 			RegionNormalizedName string `json:"regionNormalizedName"`
+// 			DistrictName         string `json:"districtName"`
+// 			DistrictID           int    `json:"districtId"`
+// 			PathName             string `json:"pathName"`
+// 		} `json:"location"`
+// 		URLPath string `json:"urlPath"`
+// 		User    struct {
+// 			ID   int    `json:"id"`
+// 			Name string `json:"name"`
+// 			// Photo                    string      `json:"photo"`
+// 			// Logo                     interface{} `json:"logo"`
+// 			OtherAdsEnabled          bool      `json:"otherAdsEnabled"`
+// 			SocialNetworkAccountType string    `json:"socialNetworkAccountType"`
+// 			IsOnline                 bool      `json:"isOnline"`
+// 			LastSeen                 time.Time `json:"lastSeen"`
+// 			About                    string    `json:"about"`
+// 			BannerDesktopURL         string    `json:"bannerDesktopURL"`
+// 			// LogoAdPage               string    `json:"logo_ad_page"`
+// 			CompanyName string    `json:"company_name"`
+// 			Created     time.Time `json:"created"`
+// 			// SellerType               interface{} `json:"sellerType"`
+// 		} `json:"user"`
+// 		// Shop struct {
+// 		// 	Subdomain interface{} `json:"subdomain"`
+// 		// } `json:"shop"`
+// 		// Safedeal struct {
+// 		// 	Weight          int           `json:"weight"`
+// 		// 	WeightGrams     int           `json:"weight_grams"`
+// 		// 	Status          string        `json:"status"`
+// 		// 	SafedealBlocked bool          `json:"safedeal_blocked"`
+// 		// 	AllowedQuantity []interface{} `json:"allowed_quantity"`
+// 		// } `json:"safedeal"`
+// 		// SearchReason     string `json:"searchReason"`
+// 		// IsNewFavouriteAd bool   `json:"isNewFavouriteAd"`
+// 	} `json:"ads"`
+// 	MetaData struct {
+// 		SearchID          string        `json:"searchId"`
+// 		SpellCheckerQuery interface{}   `json:"spellCheckerQuery"`
+// 		SearchSuggestion  interface{}   `json:"searchSuggestion"`
+// 		FavSearchNewAds   []interface{} `json:"favSearchNewAds"`
+// 		Location          interface{}   `json:"location"`
+// 		Facets            struct {
+// 			City []struct {
+// 				ID    int    `json:"id"`
+// 				Count int    `json:"count"`
+// 				Label string `json:"label"`
+// 				URL   string `json:"url"`
+// 			} `json:"city"`
+// 		} `json:"facets"`
+// 		SearchReason struct {
+// 			Promoted []int `json:"promoted"`
+// 			Organic  []int `json:"organic"`
+// 		} `json:"searchReason"`
+// 		SearchRequestID string `json:"search_request_id"`
+// 	} `json:"metaData"`
+// 	Links struct {
+// 		Self  string `json:"self"`
+// 		Next  string `json:"next"`
+// 		First string `json:"first"`
+// 	} `json:"links"`
+// 	Params struct {
+// 		Offset         int    `json:"offset"`
+// 		Limit          int    `json:"limit"`
+// 		CategoryID     int    `json:"category_id"`
+// 		RegionID       int    `json:"region_id"`
+// 		Currency       string `json:"currency"`
+// 		SortBy         string `json:"sort_by"`
+// 		FilterRefiners string `json:"filter_refiners"`
+// 		Facets         string `json:"facets"`
+// 	} `json:"params"`
+// 	RequestParams struct {
+// 		Page         int    `json:"page"`
+// 		CategoryPath string `json:"categoryPath"`
+// 		Query        string `json:"query"`
+// 		Params       struct {
+// 			Currency    string `json:"currency"`
+// 			SearchOrder string `json:"search[order]"`
+// 		} `json:"params"`
+// 		Options struct {
+// 			SpellCheckerDisabledByExperiment bool `json:"spellCheckerDisabledByExperiment"`
+// 		} `json:"options"`
+// 	} `json:"requestParams"`
+// 	CategoryID int         `json:"categoryId"`
+// 	Categories interface{} `json:"categories"`
+// 	// ViewType         string      `json:"viewType"`
+// 	// ExpansionListing interface{} `json:"expansionListing"`
+// }
