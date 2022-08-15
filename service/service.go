@@ -6,71 +6,109 @@ import (
 	"fmt"
 	"olx/db"
 	"olx/models"
-	"olx/olxapi"
 	"sort"
 	"time"
 
 	"github.com/sirupsen/logrus"
 )
 
-// Brocker .
-type Brocker struct {
-	client   *olxapi.Client
-	db       *db.FileDb
-	logger   *logrus.Logger
+// PollClient .
+type PollClient interface {
+	Get(context.Context, string) (*models.QueryResult, error)
+	InitProxy() error
+}
+
+// IPoller .
+type IPoller interface {
+	Poll(context.Context, string) chan *models.QueryResult
+}
+
+// Poller .
+type Poller struct {
+	client   PollClient
 	interval int
-	tries    int
+	logger   *logrus.Logger
 }
 
 // New .
-func New(client *olxapi.Client, db *db.FileDb, log *logrus.Logger, interval, tries int) *Brocker {
+func New(client PollClient, interval int, log *logrus.Logger) *Poller {
 	log.Info("initiating new server")
-	return &Brocker{
+	return &Poller{
 		client:   client,
-		db:       db,
-		logger:   log,
 		interval: interval,
-		tries:    tries,
+		logger:   log,
 	}
 }
 
-func (b *Brocker) poll(ctx context.Context, iterval, tries int) chan *models.QueryResult {
+// Poll .
+func (p *Poller) Poll(ctx context.Context, url string) chan *models.QueryResult {
 
-	queries := make(chan *models.QueryResult)
+	type result struct {
+		res *models.QueryResult
+		err error
+	}
 
-	t := time.Duration(time.Duration(iterval) * time.Second)
-	count := 0
+	var (
+		t       = time.Duration(time.Duration(p.interval) * time.Second)
+		queries = make(chan *models.QueryResult)
+		results = make(chan *result)
+		guard   = make(chan struct{})
+		count   = 0
+
+		f = func(res *models.QueryResult, err error) *result {
+			return &result{res: res, err: err}
+		}
+	)
+
+	go func() {
+		for range guard {
+			select {
+			case <-ctx.Done():
+				return
+			case results <- f(p.client.Get(ctx, url)):
+			}
+		}
+	}()
 
 	go func() {
 		defer close(queries)
+		defer close(results)
+		defer close(guard)
 
 		for {
 			select {
 			case <-ctx.Done():
 				return
-			case <-time.After(t):
-				if count > tries {
+			case r := <-results:
+				if r.err != nil {
+					p.logger.Errorf("request not succeded err %v", r.err)
+					count++
 
-					fmt.Println("setting new proxy")
-					if err := b.client.InitProxy(); err != nil {
-						return
+					if count > 5 {
+						fmt.Println("too many errors try another proxy")
+						if err := p.client.InitProxy(); err != nil {
+							return
+						}
+
+						count = 0
 					}
 
-					count = 0
+					guard <- struct{}{}
 					continue
 				}
 
-				res, err := b.client.Get(ctx)
-				if err != nil {
-					b.logger.Errorf("cant get res from api, call #%v, err: ", count, err)
-					count++
-					t = time.Duration(0)
+				select {
+				case <-ctx.Done():
+					return
+				case queries <- r.res:
+				}
+
+			case <-time.After(t):
+				if count != 0 {
 					continue
 				}
 
-				count = 0
-				t = time.Duration(time.Duration(iterval) * time.Minute)
-				queries <- res
+				guard <- struct{}{}
 			}
 		}
 	}()
@@ -78,30 +116,53 @@ func (b *Brocker) poll(ctx context.Context, iterval, tries int) chan *models.Que
 	return queries
 }
 
+// Server .
+type Server struct {
+	poller IPoller
+	db     *db.FileDb
+	apiurl string
+	logger *logrus.Logger
+}
+
+// NewServer .
+func NewServer(poller IPoller, db *db.FileDb, url string, log *logrus.Logger) *Server {
+	return &Server{
+		poller: poller,
+		db:     db,
+		apiurl: url,
+		logger: log,
+	}
+}
+
 // Run .
-func (b *Brocker) Run(ctx context.Context) chan []*models.Appartment {
-	b.logger.Info("serving messages from server")
+func (s *Server) Run(ctx context.Context) chan []*models.Appartment {
+	s.logger.Info("serving messages from server")
 
 	msgs := make(chan []*models.Appartment)
-
-	ch := b.poll(ctx, b.interval, b.tries)
 
 	go func() {
 		defer close(msgs)
 
-		for v := range ch {
+		for v := range s.poller.Poll(ctx, s.apiurl) {
 			select {
 			case <-ctx.Done():
 				return
 			default:
-				fmt.Println("data :", v)
-				aps, err := b.processData(ctx, v)
+				aps, err := s.processData(ctx, v)
 				if err != nil {
-					b.logger.Errorf("error while processing queryres, %v", err)
+					s.logger.Errorf("error while processing queryres, %v", err)
 					continue
 				}
 
-				msgs <- aps
+				if err := s.db.Save(ctx, aps); err != nil {
+					s.logger.Errorf("error cant save to db, %v", err)
+					continue
+				}
+
+				select {
+				case <-ctx.Done():
+				case msgs <- aps:
+				}
 			}
 		}
 	}()
@@ -109,15 +170,15 @@ func (b *Brocker) Run(ctx context.Context) chan []*models.Appartment {
 	return msgs
 }
 
-func (b *Brocker) processData(ctx context.Context, res *models.QueryResult) ([]*models.Appartment, error) {
-	b.logger.Info("olx server processing data")
+func (s *Server) processData(ctx context.Context, res *models.QueryResult) ([]*models.Appartment, error) {
+	s.logger.Info("olx server processing data")
 	var empty bool
-	last, err := b.db.GetLast(ctx)
+	last, err := s.db.GetLast(ctx)
 	if err != nil {
-		b.logger.Error("olx server error ocucured ", err)
+		s.logger.Error("olx server error ocucured ", err)
 		switch {
 		case errors.Is(err, db.ErrEmptyDB):
-			b.logger.Info("error was empty error")
+			s.logger.Info("error was empty error")
 			empty = true
 			break
 		default:
@@ -125,19 +186,18 @@ func (b *Brocker) processData(ctx context.Context, res *models.QueryResult) ([]*
 		}
 	}
 
-	organic := b.extractOrganic(ctx, res)
-
-	if !empty {
-		b.logger.Info("olx server db is not empty getting fresh")
-		organic = b.sortFresh(ctx, organic, last.LastRefreshTime)
+	organic := extractOrganic(res)
+	if empty {
+		return organic, nil
 	}
 
+	s.logger.Info("olx server db is not empty getting fresh")
+	organic = sortFresh(organic, last.LastRefreshTime)
 	return organic, nil
 }
 
-func (b *Brocker) sortFresh(ctx context.Context, sl []*models.Appartment, last time.Time) []*models.Appartment {
+func sortFresh(sl []*models.Appartment, last time.Time) []*models.Appartment {
 
-	b.logger.Infof("sorting fresh appartments by time, %v", last)
 	sort.Slice(sl, func(i, j int) bool {
 		return sl[i].LastRefreshTime.After(sl[j].LastRefreshTime)
 	})
@@ -151,12 +211,10 @@ func (b *Brocker) sortFresh(ctx context.Context, sl []*models.Appartment, last t
 		break
 	}
 
-	b.logger.Infof("length of slice is : %v", len(sl[:idx]))
 	return sl[:idx]
 }
 
-func (b *Brocker) extractOrganic(ctx context.Context, res *models.QueryResult) []*models.Appartment {
-	b.logger.Info("extracting only organic appartments")
+func extractOrganic(res *models.QueryResult) []*models.Appartment {
 	organic := make([]*models.Appartment, len(res.Metadata.Source.Organic))
 
 	for i, v := range res.Metadata.Source.Organic {

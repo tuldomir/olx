@@ -17,21 +17,21 @@ import (
 
 // Client .
 type Client struct {
-	Client  *http.Client
-	logger  *logrus.Logger
-	api     string
+	Client *http.Client
+	logger *logrus.Logger
+	// api     string
 	proxy   string
 	proxies string
 }
 
 // New .
-func New(proxies string, api string, log *logrus.Logger) (*Client, error) {
+func New(proxies string, log *logrus.Logger) (*Client, error) {
 	log.Infof("initiating new olx client, proxies : %v", proxies)
 
 	c := &Client{
-		Client:  &http.Client{},
-		logger:  log,
-		api:     api,
+		Client: &http.Client{},
+		logger: log,
+		// api:     api,
 		proxies: proxies,
 	}
 
@@ -101,9 +101,9 @@ func (c *Client) GetProxy() (string, error) {
 }
 
 // MakeRequest .
-func (c *Client) MakeRequest(ctx context.Context) (*http.Request, error) {
+func (c *Client) MakeRequest(ctx context.Context, url string) (*http.Request, error) {
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.api, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		c.logger.Error("cant reate request for olx client", err)
 		return nil, err
@@ -118,13 +118,12 @@ func (c *Client) MakeRequest(ctx context.Context) (*http.Request, error) {
 }
 
 // Get .
-func (c *Client) Get(ctx context.Context) (*models.QueryResult, error) {
+func (c *Client) Get(ctx context.Context, url string) (*models.QueryResult, error) {
 	c.logger.Info("olx client trying new request to api")
 
-	// ctx, cancel := context.WithTimeout(ctx, 3*time.Minute)
-	// defer cancel()
+	var data models.QueryResult
 
-	req, err := c.MakeRequest(ctx)
+	req, err := c.MakeRequest(ctx, url)
 	if err != nil {
 		return nil, err
 	}
@@ -134,16 +133,12 @@ func (c *Client) Get(ctx context.Context) (*models.QueryResult, error) {
 		return nil, err
 	}
 
-	var data models.QueryResult
 	err = c.httpDo(ctx, req, func(res *http.Response, err error) error {
-		// fmt.Println("here")
 		defer func() {
 			if res != nil {
 				res.Body.Close()
 			}
 		}()
-
-		// res, err := c.Client.Do(req)
 
 		if err != nil {
 			c.logger.Error("cant make http request to remote api form olx client", err)
@@ -156,22 +151,15 @@ func (c *Client) Get(ctx context.Context) (*models.QueryResult, error) {
 			return err
 		}
 
-		// bs, _ := ioutil.ReadAll(res.Body)
-		// fmt.Println(string(bs))
-		// err = json.Unmarshal(bs, &data)
-
 		if err := json.NewDecoder(res.Body).Decode(&data); err != nil {
-			// if err != nil {
-			c.logger.Error("cant decode body response in olx client")
+			c.logger.Errorf("cant decode body response in olx client", err)
 			return err
 		}
-		// c.logger.Info("request to olx api was made succesfuly")
 
 		c.logger.Info("decoded response successfuly")
 		return nil
 	})
 
-	// fmt.Println("res: ", data, err)
 	if err != nil {
 		return nil, err
 	}
@@ -184,14 +172,16 @@ func (c *Client) httpDo(ctx context.Context, req *http.Request, f func(*http.Res
 	defer close(errch)
 
 	go func() {
-		errch <- f(c.Client.Do(req))
+		select {
+		case <-ctx.Done():
+		case errch <- f(c.Client.Do(req)):
+		}
 	}()
 
 	select {
 	case err := <-errch:
 		return err
 	case <-ctx.Done():
-		<-errch
 		return ctx.Err()
 	}
 }
